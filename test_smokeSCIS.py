@@ -19,9 +19,19 @@ def run(playwright: Playwright) -> None:
     page.get_by_test_id("hab-policy--0").click()
     page.get_by_test_id("nav").click()
     page.get_by_text("Make a Request Arrow Icon").click()
-    page.get_by_test_id("get-a-quote").click()
-    page.get_by_role("button", name="Continue").click()
-    page.locator("label").filter(has_text="Other").click()
+    #if else for make a req and delete and restart
+    if (page.get_by_test_id("delete-and-new").is_visible()):
+        page.get_by_test_id("delete-and-new").click()
+        page.get_by_test_id("get-a-quote").click()
+    else:
+        page.get_by_test_id("get-a-quote").click()
+    page.wait_for_timeout(2000)
+    #if else for page.get_by_role("button", name="Continue").click()
+    if (page.get_by_role("button", name="Continue").is_visible()):
+        page.get_by_role("button", name="Continue").click()
+        page.locator("label").filter(has_text="Other").click()
+    else:
+        page.locator("label").filter(has_text="Other").click()
     page.get_by_test_id("start-request").click()
     page.get_by_role("textbox", name="How can we help you today?").click()
     page.get_by_role("textbox", name="How can we help you today?").fill("abc")
